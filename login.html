@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login – Zomato</title>
+    <meta name="description" content="Log in to your Zomato account to order food and track deliveries.">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --red: #e23744; --red-dark: #c5303b;
+            --bg: #f8f8f8; --card-bg: #ffffff;
+            --text: #1c1c1c; --muted: #696969;
+            --border: #e8e8e8;
+        }
+        [data-theme="dark"] {
+            --bg: #0f0f0f; --card-bg: #1e1e1e;
+            --text: #f0f0f0; --muted: #a0a0a0; --border: #2e2e2e;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; transition: background 0.3s, color 0.3s; }
+
+        /* ── NAVBAR ── */
+        .navbar { background: var(--card-bg); border-bottom: 1px solid var(--border); padding: 14px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 8px rgba(0,0,0,0.07); }
+        .nav-logo { font-size: 1.7rem; font-weight: 900; font-style: italic; color: var(--red); text-decoration: none; }
+        .nav-right { display: flex; align-items: center; gap: 12px; }
+        .dark-btn { background: none; border: 1.5px solid var(--border); color: var(--text); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 0.95rem; transition: all 0.25s; }
+        .dark-btn:hover { background: var(--red); border-color: var(--red); color: #fff; }
+        .nav-link { text-decoration: none; font-size: 0.88rem; font-weight: 600; color: var(--red); border: 1.5px solid var(--red); padding: 7px 18px; border-radius: 8px; transition: all 0.25s; }
+        .nav-link:hover, .nav-link.filled { background: var(--red); color: #fff; }
+
+        /* ── AUTH LAYOUT ── */
+        .auth-wrap { flex: 1; display: flex; }
+        .auth-banner {
+            flex: 1; position: relative;
+            background: url('https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=1200&q=80') center/cover no-repeat;
+        }
+        .auth-banner::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.15) 70%); }
+        .banner-content { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding: 50px; color: #fff; }
+        .banner-content .brand { font-size: 2.6rem; font-weight: 900; font-style: italic; margin-bottom: 14px; }
+        .banner-content h2 { font-size: 1.8rem; font-weight: 700; line-height: 1.3; margin-bottom: 10px; }
+        .banner-content p { color: rgba(255,255,255,0.78); font-size: 0.95rem; line-height: 1.65; }
+
+        /* ── FORM PANEL ── */
+        .auth-panel { flex: 0 0 460px; background: var(--card-bg); display: flex; flex-direction: column; justify-content: center; padding: 55px 45px; overflow-y: auto; }
+        .auth-panel h1 { font-size: 1.75rem; font-weight: 800; margin-bottom: 5px; }
+        .auth-panel .sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 32px; }
+        .auth-panel .sub a { color: var(--red); text-decoration: none; font-weight: 600; }
+        .auth-panel .sub a:hover { text-decoration: underline; }
+
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-size: 0.83rem; font-weight: 600; margin-bottom: 7px; }
+        .input-wrap { position: relative; display: flex; align-items: center; }
+        .input-wrap i.icon { position: absolute; left: 13px; color: var(--muted); font-size: 0.9rem; pointer-events: none; }
+        .form-group input {
+            width: 100%; padding: 12px 13px 12px 38px;
+            border: 1.5px solid var(--border); border-radius: 10px;
+            font-family: 'Poppins', sans-serif; font-size: 0.9rem;
+            background: var(--bg); color: var(--text);
+            outline: none; transition: border-color 0.25s, box-shadow 0.25s;
+        }
+        .form-group input:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(226,55,68,0.1); }
+        .toggle-pw { position: absolute; right: 13px; background: none; border: none; color: var(--muted); cursor: pointer; font-size: 0.88rem; transition: color 0.2s; }
+        .toggle-pw:hover { color: var(--red); }
+        .field-err { font-size: 0.76rem; color: var(--red); margin-top: 5px; display: none; }
+        .form-group.invalid input { border-color: var(--red); }
+        .form-group.invalid .field-err { display: block; }
+        .form-group.valid input { border-color: #267e3e; }
+
+        .row-between { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; font-size: 0.84rem; }
+        .remember { display: flex; align-items: center; gap: 7px; cursor: pointer; }
+        .remember input { accent-color: var(--red); }
+        .forgot { color: var(--red); text-decoration: none; font-weight: 600; }
+        .forgot:hover { text-decoration: underline; }
+
+        .btn-main { width: 100%; padding: 13px; background: var(--red); color: #fff; border: none; border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: background 0.25s, transform 0.2s; margin-bottom: 20px; }
+        .btn-main:hover { background: var(--red-dark); transform: translateY(-2px); }
+        .btn-main:disabled { opacity: 0.7; cursor: default; transform: none; }
+
+        .divider { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 0.8rem; margin-bottom: 18px; }
+        .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+        .social-btns { display: flex; gap: 12px; margin-bottom: 24px; }
+        .social-btn { flex: 1; padding: 10px; border: 1.5px solid var(--border); border-radius: 10px; background: var(--card-bg); color: var(--text); font-family: 'Poppins', sans-serif; font-size: 0.84rem; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.25s; }
+        .social-btn:hover { border-color: var(--red); color: var(--red); }
+        .social-btn .google-icon { color: #ea4335; }
+        .social-btn .fb-icon { color: #1877f2; }
+
+        .terms { font-size: 0.75rem; color: var(--muted); text-align: center; }
+        .terms a { color: var(--red); text-decoration: none; }
+
+        /* Alert */
+        .alert { padding: 12px 16px; border-radius: 10px; font-size: 0.86rem; margin-bottom: 18px; display: none; }
+        .alert.success { background: rgba(38,126,62,0.1); color: #267e3e; border: 1px solid rgba(38,126,62,0.25); }
+        .alert.error { background: rgba(226,55,68,0.08); color: var(--red); border: 1px solid rgba(226,55,68,0.2); }
+
+        @media (max-width: 860px) { .auth-banner { display: none; } .auth-panel { flex: 1; } }
+        @media (max-width: 480px) { .auth-panel { padding: 36px 22px; } .social-btns { flex-direction: column; } }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="nav-logo">zomato</a>
+        <div class="nav-right">
+            <button class="dark-btn" id="darkBtn" title="Toggle dark mode"><i class="fas fa-moon"></i></button>
+            <a href="login.html" class="nav-link filled">Log In</a>
+            <a href="signup.html" class="nav-link">Sign Up</a>
+        </div>
+    </nav>
+
+    <div class="auth-wrap">
+        <div class="auth-banner">
+            <div class="banner-content">
+                <div class="brand">zomato</div>
+                <h2>Delicious food, delivered fast.</h2>
+                <p>Log in to track your orders, discover restaurants, and enjoy member-only deals.</p>
+            </div>
+        </div>
+
+        <div class="auth-panel">
+            <h1>Welcome back 👋</h1>
+            <p class="sub">No account? <a href="signup.html">Create one free</a></p>
+
+            <div class="alert" id="alert"></div>
+
+            <form id="loginForm" novalidate>
+                <div class="form-group" id="grp-email">
+                    <label for="email">Email address</label>
+                    <div class="input-wrap">
+                        <i class="fas fa-envelope icon"></i>
+                        <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
+                    </div>
+                    <span class="field-err">Enter a valid email address.</span>
+                </div>
+
+                <div class="form-group" id="grp-pw">
+                    <label for="password">Password</label>
+                    <div class="input-wrap">
+                        <i class="fas fa-lock icon"></i>
+                        <input type="password" id="password" placeholder="Your password" autocomplete="current-password">
+                        <button type="button" class="toggle-pw" onclick="togglePw('password',this)"><i class="fas fa-eye"></i></button>
+                    </div>
+                    <span class="field-err">Password must be at least 6 characters.</span>
+                </div>
+
+                <div class="row-between">
+                    <label class="remember"><input type="checkbox" id="remember"> Remember me</label>
+                    <a href="#" class="forgot" onclick="showAlert('Password reset link sent to your email 📧','success');return false;">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="btn-main" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i>&nbsp; Log In
+                </button>
+            </form>
+
+            <div class="divider">or continue with</div>
+            <div class="social-btns">
+                <button class="social-btn" onclick="showAlert('Google login coming soon!','error')"><i class="fab fa-google google-icon"></i> Google</button>
+                <button class="social-btn" onclick="showAlert('Facebook login coming soon!','error')"><i class="fab fa-facebook-f fb-icon"></i> Facebook</button>
+            </div>
+            <p class="terms">By continuing, you agree to Zomato's <a href="#">Terms</a> &amp; <a href="#">Privacy Policy</a>.</p>
+        </div>
+    </div>
+
+    <script>
+        const API = 'http://localhost:5001/api/auth';
+
+        // Dark mode
+        let dark = localStorage.getItem('zomato-dark') === '1';
+        const darkBtn = document.getElementById('darkBtn');
+        applyDark();
+        darkBtn.addEventListener('click', () => { dark = !dark; localStorage.setItem('zomato-dark', dark ? '1' : '0'); applyDark(); });
+        function applyDark() {
+            document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+            darkBtn.innerHTML = dark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        }
+
+        function togglePw(id, btn) {
+            const el = document.getElementById(id);
+            const show = el.type === 'password';
+            el.type = show ? 'text' : 'password';
+            btn.innerHTML = show ? '<i class="fas fa-eye-slash"></i>' : '<i class="fas fa-eye"></i>';
+        }
+
+        function showAlert(msg, type) {
+            const el = document.getElementById('alert');
+            el.textContent = msg;
+            el.className = 'alert ' + type;
+            el.style.display = 'block';
+            setTimeout(() => el.style.display = 'none', 4000);
+        }
+
+        function validate(id, grpId, fn) {
+            const el = document.getElementById(id);
+            const grp = document.getElementById(grpId);
+            const ok = fn(el.value.trim());
+            grp.classList.toggle('invalid', !ok);
+            grp.classList.toggle('valid', ok);
+            return ok;
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const emailOk = validate('email', 'grp-email', v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+            const pwOk   = validate('password', 'grp-pw', v => v.length >= 6);
+            if (!emailOk || !pwOk) return;
+
+            const btn = document.getElementById('loginBtn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>&nbsp; Logging in…';
+            btn.disabled = true;
+
+            try {
+                const res = await fetch(`${API}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: document.getElementById('email').value.trim(),
+                        password: document.getElementById('password').value,
+                    }),
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    localStorage.setItem('zomato-token', data.token);
+                    localStorage.setItem('zomato-user', JSON.stringify(data.user));
+                    showAlert(data.message, 'success');
+                    setTimeout(() => window.location.href = 'index.html', 1200);
+                } else {
+                    showAlert(data.message, 'error');
+                    btn.innerHTML = '<i class="fas fa-sign-in-alt"></i>&nbsp; Log In';
+                    btn.disabled = false;
+                }
+            } catch (err) {
+                showAlert('Cannot connect to server. Make sure the backend is running on port 5001.', 'error');
+                btn.innerHTML = '<i class="fas fa-sign-in-alt"></i>&nbsp; Log In';
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

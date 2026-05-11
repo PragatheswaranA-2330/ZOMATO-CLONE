@@ -1,0 +1,3 @@
+# 
+
+{"success":true,"message":"Zomato API is running 🚀","db":"Connected"}

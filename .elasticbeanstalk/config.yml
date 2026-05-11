@@ -1,0 +1,13 @@
+branch-defaults:
+  default:
+    environment: zomato-backend-env
+    group_suffix: null
+global:
+  application_name: zomato-backend
+  default_platform: node.js 18
+  default_region: us-east-1
+  profile: default
+environment:
+  MONGO_URI: "${MONGO_URI}"
+  JWT_SECRET: "${JWT_SECRET}"
+  PORT: "5000"

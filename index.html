@@ -1,0 +1,2250 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zomato – Discover the Best Food & Drinks</title>
+    <meta name="description"
+        content="Zomato – India's #1 food delivery app. Order from 200,000+ restaurants, explore cuisines, dining and nightlife near you.">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" type="image/png" href="https://www.zomato.com/favicon.ico">
+    <style>
+        :root {
+            --red: #e23744;
+            --red-dark: #c5303b;
+            --bg: #ffffff;
+            --bg2: #f8f8f8;
+            --bg3: #f0f0f0;
+            --card-bg: #ffffff;
+            --text: #1c1c1c;
+            --muted: #696969;
+            --border: #e8e8e8;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 12px 35px rgba(0, 0, 0, 0.14);
+            --navbar-scrolled: #ffffff;
+            --skeleton: #e0e0e0;
+            --skeleton-shine: #f5f5f5;
+            --glass: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.25);
+        }
+
+        [data-theme="dark"] {
+            --bg: #0f0f0f;
+            --bg2: #1a1a1a;
+            --bg3: #242424;
+            --card-bg: #1e1e1e;
+            --text: #f0f0f0;
+            --muted: #a0a0a0;
+            --border: #2e2e2e;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            --shadow-hover: 0 12px 35px rgba(0, 0, 0, 0.6);
+            --navbar-scrolled: #0f0f0f;
+            --skeleton: #2a2a2a;
+            --skeleton-shine: #333333;
+            --glass: rgba(0, 0, 0, 0.25);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            overflow-x: hidden;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* ── NAVBAR ── */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 18px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.35s ease;
+        }
+
+        .navbar.scrolled {
+            background: var(--navbar-scrolled);
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.12);
+            padding: 11px 60px;
+        }
+
+        .nav-logo {
+            font-size: 1.9rem;
+            font-weight: 900;
+            font-style: italic;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: -1px;
+        }
+
+        .navbar.scrolled .nav-logo {
+            color: var(--red);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 7px 13px;
+            border-radius: 8px;
+            transition: all 0.25s;
+        }
+
+        .navbar.scrolled .nav-links a {
+            color: var(--text);
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--red) !important;
+            background: rgba(226, 55, 68, 0.09);
+        }
+
+        .nav-btn {
+            padding: 8px 20px;
+            border-radius: 9px;
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            background: transparent;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.88rem;
+            transition: all 0.25s;
+        }
+
+        .navbar.scrolled .nav-btn {
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        .nav-btn:hover {
+            background: var(--red);
+            color: #fff !important;
+            border-color: var(--red);
+        }
+
+        .nav-btn.filled {
+            background: var(--red);
+            border-color: var(--red);
+            color: #fff;
+        }
+
+        .nav-btn.filled:hover {
+            background: var(--red-dark);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dark-toggle {
+            background: none;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            color: #fff;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .navbar.scrolled .dark-toggle {
+            border-color: var(--border);
+            color: var(--text);
+        }
+
+        .dark-toggle:hover {
+            background: var(--red);
+            border-color: var(--red);
+            color: #fff;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            color: #fff;
+            font-size: 1.4rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .navbar.scrolled .mobile-menu-btn {
+            color: var(--text);
+        }
+
+        /* Mobile Nav Drawer */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 280px;
+            height: 100vh;
+            background: var(--card-bg);
+            z-index: 2000;
+            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.2);
+            transition: right 0.35s ease;
+            padding: 30px 25px;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .mobile-nav.open {
+            right: 0;
+        }
+
+        .mobile-nav-close {
+            align-self: flex-end;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text);
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .mobile-nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .mobile-nav a:hover {
+            color: var(--red);
+        }
+
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1999;
+        }
+
+        .mobile-overlay.open {
+            display: block;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            min-height: 700px;
+            background: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1920&q=80') center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.3) 60%, rgba(0, 0, 0, 0.6) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            padding: 0 20px;
+        }
+
+        .hero-logo {
+            font-size: 5.5rem;
+            font-weight: 900;
+            font-style: italic;
+            letter-spacing: -2px;
+            text-shadow: 2px 3px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .hero-title {
+            font-size: 3.4rem;
+            font-weight: 700;
+            line-height: 1.2;
+            text-shadow: 1px 2px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .hero-sub {
+            font-size: 1.2rem;
+            font-weight: 300;
+            opacity: 0.92;
+            margin-top: 6px;
+        }
+
+        /* Hero Search */
+        .hero-search {
+            display: flex;
+            max-width: 760px;
+            width: 100%;
+            margin-top: 28px;
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-location {
+            display: flex;
+            align-items: center;
+            padding: 14px 18px;
+            gap: 9px;
+            border-right: 1.5px solid #ddd;
+            flex: 0 0 240px;
+        }
+
+        .hero-location i {
+            color: var(--red);
+            font-size: 1rem;
+        }
+
+        .hero-location input {
+            border: none;
+            outline: none;
+            font-size: 0.9rem;
+            font-family: 'Poppins', sans-serif;
+            color: #1c1c1c;
+            width: 100%;
+            background: transparent;
+        }
+
+        .hero-search-input {
+            display: flex;
+            align-items: center;
+            padding: 14px 18px;
+            gap: 9px;
+            flex: 1;
+        }
+
+        .hero-search-input i {
+            color: #888;
+            font-size: 1rem;
+        }
+
+        .hero-search-input input {
+            border: none;
+            outline: none;
+            font-size: 0.9rem;
+            font-family: 'Poppins', sans-serif;
+            color: #1c1c1c;
+            width: 100%;
+            background: transparent;
+        }
+
+        .hero-search-btn {
+            background: var(--red);
+            color: #fff;
+            border: none;
+            padding: 0 26px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            transition: background 0.25s;
+        }
+
+        .hero-search-btn:hover {
+            background: var(--red-dark);
+        }
+
+        .app-btns {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            margin-bottom: 40px;
+        }
+
+        .app-btn {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 12px !important;
+            background: #000 !important;
+            color: #fff !important;
+            padding: 12px 24px !important;
+            border-radius: 10px !important;
+            text-decoration: none !important;
+            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+            transition: all 0.3s !important;
+            width: fit-content !important;
+            min-width: max-content !important;
+            position: relative !important;
+            z-index: 10 !important;
+        }
+
+        .app-btn:hover {
+            transform: translateY(-3px) !important;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5) !important;
+        }
+
+        .app-btn i {
+            font-size: 28px !important;
+            color: #fff !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .app-btn .btn-text {
+            text-align: left !important;
+            display: flex !important;
+            flex-direction: column !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .app-btn .btn-text small {
+            font-size: 11px !important;
+            font-weight: 500 !important;
+            color: #fff !important;
+            margin: 0 0 2px 0 !important;
+            padding: 0 !important;
+            line-height: 1 !important;
+            opacity: 0.9 !important;
+            letter-spacing: 0.5px !important;
+        }
+
+        .app-btn .btn-text span {
+            font-size: 18px !important;
+            font-weight: 800 !important;
+            color: #fff !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            line-height: 1 !important;
+            letter-spacing: 0.5px !important;
+        }
+
+        .scroll-down {
+            position: absolute;
+            bottom: 28px;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            color: #fff;
+            font-size: 0.85rem;
+            cursor: pointer;
+            animation: bounceY 2s infinite;
+        }
+
+        @keyframes bounceY {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(8px);
+            }
+        }
+
+        /* ── SECTION SHARED ── */
+        .section {
+            padding: 80px 60px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-header h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .section-header p {
+            color: var(--muted);
+            font-size: 1.05rem;
+            margin-top: 8px;
+        }
+
+        .pill {
+            display: inline-block;
+            background: rgba(226, 55, 68, 0.1);
+            color: var(--red);
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        /* ── FILTERS ── */
+        .filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 35px;
+        }
+
+        .filter-btn {
+            padding: 8px 20px;
+            border-radius: 25px;
+            border: 1.5px solid var(--border);
+            background: var(--card-bg);
+            color: var(--text);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--red);
+            color: #fff;
+            border-color: var(--red);
+        }
+
+        /* ── CATEGORIES ── */
+        .categories {
+            background: var(--bg);
+        }
+
+        .cat-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .cat-card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 22px 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: var(--shadow);
+            border: 1.5px solid var(--border);
+        }
+
+        .cat-card:hover {
+            transform: translateY(-7px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--red);
+        }
+
+        .cat-img {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 14px;
+            display: block;
+            transition: transform 0.3s;
+        }
+
+        .cat-card:hover .cat-img {
+            transform: scale(1.08);
+        }
+
+        .cat-card span {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+
+        .cat-card small {
+            display: block;
+            color: var(--muted);
+            font-size: 0.75rem;
+            margin-top: 3px;
+        }
+
+        /* ── RESTAURANTS ── */
+        .restaurants {
+            background: var(--bg2);
+        }
+
+        .restaurant-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            max-width: 1320px;
+            margin: 0 auto;
+        }
+
+        .rest-card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 1px solid var(--border);
+        }
+
+        .rest-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .rest-img-wrap {
+            position: relative;
+            height: 195px;
+            overflow: hidden;
+        }
+
+        .rest-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s;
+        }
+
+        .rest-card:hover .rest-img-wrap img {
+            transform: scale(1.06);
+        }
+
+        .badge {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: linear-gradient(135deg, #e23744, #ff6b6b);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .badge-time {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.65);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            backdrop-filter: blur(4px);
+        }
+
+        .fav-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: #ccc;
+            transition: all 0.25s;
+        }
+
+        .fav-btn:hover,
+        .fav-btn.active {
+            color: var(--red);
+        }
+
+        .rest-info {
+            padding: 14px 16px;
+        }
+
+        .rest-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .rest-row h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: #267e3e;
+            color: #fff;
+            padding: 3px 8px;
+            border-radius: 7px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .rating.orange {
+            background: #e07c2a;
+        }
+
+        .rating.red {
+            background: #e23744;
+        }
+
+        .cuisine {
+            color: var(--muted);
+            font-size: 0.82rem;
+            margin-bottom: 6px;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            color: var(--muted);
+            font-size: 0.82rem;
+            border-top: 1px solid var(--border);
+            padding-top: 8px;
+            margin-top: 6px;
+        }
+
+        .location-tag {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--muted);
+            font-size: 0.78rem;
+            margin-top: 4px;
+        }
+
+        /* ── SKELETON ── */
+        .skeleton-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            max-width: 1320px;
+            margin: 0 auto;
+        }
+
+        .skel-card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .skel-img {
+            height: 195px;
+            background: var(--skeleton);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skel-body {
+            padding: 14px 16px;
+        }
+
+        .skel-line {
+            height: 14px;
+            background: var(--skeleton);
+            border-radius: 6px;
+            margin-bottom: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skel-line.short {
+            width: 60%;
+        }
+
+        .skel-line.xshort {
+            width: 40%;
+        }
+
+        .skel-img::after,
+        .skel-line::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent 0%, var(--skeleton-shine) 50%, transparent 100%);
+            animation: shimmer 1.4s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        /* ── COLLECTIONS ── */
+        .collections {
+            background: var(--bg);
+        }
+
+        .collections-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 22px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .coll-card {
+            position: relative;
+            border-radius: 18px;
+            overflow: hidden;
+            cursor: pointer;
+            height: 230px;
+            box-shadow: var(--shadow);
+        }
+
+        .coll-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s;
+        }
+
+        .coll-card:hover img {
+            transform: scale(1.08);
+        }
+
+        .coll-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.1) 60%);
+        }
+
+        .coll-info {
+            position: absolute;
+            bottom: 18px;
+            left: 18px;
+            color: #fff;
+        }
+
+        .coll-info h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+
+        .coll-info small {
+            font-size: 0.8rem;
+            opacity: 0.85;
+        }
+
+        .coll-badge {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* ── STATS ── */
+        .stats {
+            background: linear-gradient(135deg, var(--red) 0%, #c5303b 50%, #a02030 100%);
+            color: #fff;
+            padding: 70px 60px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .stat-item p {
+            font-size: 0.95rem;
+            opacity: 0.88;
+        }
+
+        .stat-item i {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+            opacity: 0.75;
+        }
+
+        /* ── APP DOWNLOAD ── */
+        .app-download {
+            background: var(--bg);
+            padding: 90px 60px;
+        }
+
+        .app-inner {
+            display: flex;
+            align-items: center;
+            gap: 80px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .app-mockup {
+            flex: 0 0 280px;
+            position: relative;
+        }
+
+        .app-mockup img {
+            width: 280px;
+            border-radius: 32px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .app-mockup::before {
+            content: '';
+            position: absolute;
+            inset: -15px;
+            background: linear-gradient(135deg, rgba(226, 55, 68, 0.12), transparent);
+            border-radius: 44px;
+            z-index: -1;
+        }
+
+        .app-text {
+            flex: 1;
+        }
+
+        .app-text h2 {
+            font-size: 2.6rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 14px;
+            color: var(--text);
+        }
+
+        .app-text p {
+            color: var(--muted);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 28px;
+        }
+
+        .app-input-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .app-input {
+            flex: 1;
+            padding: 13px 18px;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            background: var(--card-bg);
+            color: var(--text);
+            outline: none;
+            transition: border-color 0.25s;
+        }
+
+        .app-input:focus {
+            border-color: var(--red);
+        }
+
+        .app-send-btn {
+            padding: 13px 24px;
+            background: var(--red);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.25s;
+        }
+
+        .app-send-btn:hover {
+            background: var(--red-dark);
+        }
+
+        .store-btns {
+            display: flex;
+            gap: 14px;
+        }
+
+        /* ── MODALS ── */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+        }
+
+        .modal-overlay.open {
+            display: block;
+        }
+
+        .custom-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -60%);
+            background: var(--card-bg);
+            color: var(--text);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            z-index: 2001;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .custom-modal.show {
+            display: block;
+            opacity: 1;
+            transform: translate(-50%, -50%);
+        }
+
+        .modal-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--muted);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .modal-close:hover {
+            color: var(--red);
+        }
+
+        .modal-body {
+            padding: 25px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .modal-item {
+            padding: 15px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .modal-item-info h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .modal-item-info p {
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        .modal-item-price {
+            font-weight: 700;
+            color: var(--red);
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            background: #0f0f0f;
+            color: #fff;
+            padding: 60px 60px 28px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+            gap: 40px;
+            max-width: 1300px;
+            margin: 0 auto 45px;
+        }
+
+        .footer-brand .f-logo {
+            font-size: 2rem;
+            font-weight: 900;
+            font-style: italic;
+            color: #fff;
+            display: block;
+            margin-bottom: 14px;
+        }
+
+        .footer-brand p {
+            color: #888;
+            font-size: 0.88rem;
+            line-height: 1.75;
+            margin-bottom: 20px;
+        }
+
+        .social-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-row a {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-decoration: none;
+            transition: background 0.25s;
+            font-size: 0.9rem;
+        }
+
+        .social-row a:hover {
+            background: var(--red);
+        }
+
+        .f-col h4 {
+            font-size: 0.88rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 18px;
+            color: #fff;
+        }
+
+        .f-col ul {
+            list-style: none;
+        }
+
+        .f-col li {
+            margin-bottom: 10px;
+        }
+
+        .f-col a {
+            color: #888;
+            text-decoration: none;
+            font-size: 0.88rem;
+            transition: color 0.25s;
+        }
+
+        .f-col a:hover {
+            color: var(--red);
+        }
+
+        .footer-bottom {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding-top: 25px;
+            border-top: 1px solid #222;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-bottom p {
+            color: #666;
+            font-size: 0.82rem;
+        }
+
+        .footer-bottom-links a {
+            color: #666;
+            text-decoration: none;
+            font-size: 0.82rem;
+            margin-left: 22px;
+            transition: color 0.25s;
+        }
+
+        .footer-bottom-links a:hover {
+            color: var(--red);
+        }
+
+        /* ── GLASS BADGE ── */
+        .glass-tag {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            color: #fff;
+            padding: 6px 16px;
+            border-radius: 25px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: inline-block;
+            margin-bottom: 18px;
+        }
+
+        /* ── FADE IN ── */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.65s ease-out, transform 0.65s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── TOAST ── */
+        .toast {
+            position: fixed;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: #1c1c1c;
+            color: #fff;
+            padding: 13px 26px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.4s;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ── RESPONSIVE ── */
+        @media(max-width:1200px) {
+            .cat-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .restaurant-grid,
+            .skeleton-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .collections-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width:1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width:768px) {
+            .navbar {
+                padding: 14px 20px;
+            }
+
+            .navbar.scrolled {
+                padding: 10px 20px;
+            }
+
+            .nav-links,
+            .nav-btn:not(.mobile-menu-btn) {
+                display: none;
+            }
+
+            .dark-toggle {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero-logo {
+                font-size: 3.8rem;
+            }
+
+            .hero-title {
+                font-size: 2.1rem;
+            }
+
+            .hero-search {
+                flex-direction: column;
+            }
+
+            .hero-location {
+                border-right: none;
+                border-bottom: 1.5px solid #ddd;
+                flex: auto;
+            }
+
+            .app-btns {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .section {
+                padding: 55px 20px;
+            }
+
+            .cat-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .restaurant-grid,
+            .skeleton-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .collections-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .app-inner {
+                flex-direction: column;
+                gap: 40px;
+            }
+
+            .app-mockup {
+                flex: auto;
+            }
+
+            .app-text {
+                text-align: center;
+            }
+
+            .store-btns,
+            .app-input-row {
+                flex-direction: column;
+            }
+
+            footer {
+                padding: 40px 20px 20px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+        }
+
+        @media(max-width:480px) {
+            .hero-logo {
+                font-size: 3rem;
+            }
+
+            .hero-title {
+                font-size: 1.7rem;
+            }
+
+            .cat-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Modals -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeAllModals()"></div>
+
+    <div class="custom-modal" id="orderHistoryModal">
+        <div class="modal-header">
+            <h3><i class="fas fa-history" style="color:var(--red);"></i> Order History</h3>
+            <button class="modal-close" onclick="closeAllModals()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body" id="orderHistoryBody">
+            <div class="modal-item">
+                <div class="modal-item-info">
+                    <h4>Domino's Pizza</h4>
+                    <p>1x Farmhouse Pizza, 1x Coke (25 Apr 2026)</p>
+                </div>
+                <div class="modal-item-price">₹450</div>
+            </div>
+            <div class="modal-item">
+                <div class="modal-item-info">
+                    <h4>Meghana Foods</h4>
+                    <p>2x Chicken Biryani (20 Apr 2026)</p>
+                </div>
+                <div class="modal-item-price">₹700</div>
+            </div>
+            <div class="modal-item">
+                <div class="modal-item-info">
+                    <h4>The Bowl Company</h4>
+                    <p>1x Healthy Salad Bowl (15 Apr 2026)</p>
+                </div>
+                <div class="modal-item-price">₹250</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="custom-modal" id="likedFoodsModal">
+        <div class="modal-header">
+            <h3><i class="fas fa-heart" style="color:var(--red);"></i> Liked Foods</h3>
+            <button class="modal-close" onclick="closeAllModals()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body" id="likedFoodsBody">
+            <p style="text-align:center; color:var(--muted); font-size:0.9rem;" id="noLikedFoodsMsg">You haven't liked
+                any foods yet. Click the heart icon on any restaurant to add them here!</p>
+            <div id="likedFoodsList"></div>
+        </div>
+    </div>
+
+    <div class="custom-modal" id="goldModal">
+        <div class="modal-header"
+            style="background: linear-gradient(135deg, #f9ca24, #f0932b); color:#fff; border-radius: 20px 20px 0 0; border:none;">
+            <h3 style="color:#fff;"><i class="fas fa-crown"></i> Zomato Gold</h3>
+            <button class="modal-close" style="color:#fff;" onclick="closeAllModals()"><i
+                    class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body" style="text-align:center; padding: 30px;">
+            <div style="font-size: 4rem; margin-bottom:10px;">🌟</div>
+            <h2 style="color:#f0932b; margin-bottom:10px;">FLASH SALE</h2>
+            <p style="font-size:1.2rem; font-weight:700; margin-bottom:20px;">Get Gold for just ₹1 for 3 months!</p>
+            <ul style="text-align:left; color:var(--muted); margin-bottom:20px; line-height:1.8; list-style:none;">
+                <li><i class="fas fa-check" style="color:#f0932b; margin-right:10px;"></i> Free Delivery on all orders
+                </li>
+                <li><i class="fas fa-check" style="color:#f0932b; margin-right:10px;"></i> Up to 30% extra off on dining
+                </li>
+                <li><i class="fas fa-check" style="color:#f0932b; margin-right:10px;"></i> VIP Priority Support</li>
+            </ul>
+            <button onclick="closeAllModals(); showToast('Welcome to Zomato Gold! 🎉')"
+                style="background: #f0932b; color:#fff; padding: 12px 30px; border:none; border-radius:30px; font-weight:bold; font-size:1rem; cursor:pointer; width:100%;">Join
+                Now</button>
+        </div>
+    </div>
+
+    <!-- Mobile Nav -->
+    <div class="mobile-overlay" id="overlay" onclick="closeMobileNav()"></div>
+    <nav class="mobile-nav" id="mobileNav">
+        <button class="mobile-nav-close" onclick="closeMobileNav()"><i class="fas fa-times"></i></button>
+        <a href="#hero">Home</a>
+        <a href="#categories">Categories</a>
+        <a href="#restaurants">Delivery</a>
+        <a href="#dining-sec">Dining</a>
+        <a href="#collections">Nightlife</a>
+        <a href="#app-section">Get App</a>
+        <a href="login.html" class="nav-btn filled"
+            style="text-align: center; text-decoration: none; display: block;">Log In</a>
+        <a href="signup.html" class="nav-btn" style="text-align: center; text-decoration: none; display: block;">Sign
+            Up</a>
+    </nav>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar"
+        style="background: rgba(0,0,0,0.5); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255,255,255,0.1);">
+        <a href="#hero" class="nav-logo" style="display: flex; align-items: center; gap: 10px; color: #fff;">
+            <div
+                style="background: #e23744; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-style: normal;">
+                <i class="fas fa-utensils" style="font-size: 0.9rem; color: #fff;"></i>
+            </div>
+            <span style="letter-spacing: -1.5px; font-weight: 900;">zomato</span>
+        </a>
+        <div class="nav-links">
+            <a href="#hero" class="active">Home</a>
+            <a href="#restaurants">Delivery</a>
+            <a href="#dining-sec">Dining</a>
+            <a href="#collections">Nightlife</a>
+        </div>
+        <div class="nav-right">
+            <button class="dark-toggle" id="darkToggle" title="Toggle dark mode"><i class="fas fa-moon"></i></button>
+            <div id="authLinks" style="display: flex; gap: 10px; align-items: center;">
+                <a href="login.html" class="nav-btn" style="text-decoration: none;">Log In</a>
+                <a href="signup.html" class="nav-btn filled" style="text-decoration: none;">Sign Up</a>
+            </div>
+            <div id="userProfile" style="display: none; align-items: center; gap: 12px;">
+                <div class="gold-badge-nav" onclick="showGoldMembership()"
+                    style="background: linear-gradient(135deg, #fff 0%, #f9f9f9 100%); border: 1px solid #ffcc33; padding: 5px 12px; border-radius: 20px; display: flex; align-items: center; gap: 8px; cursor: pointer; box-shadow: 0 4px 12px rgba(255, 204, 51, 0.2);">
+                    <i class="fas fa-crown" style="color: #ffcc33; font-size: 0.8rem;"></i>
+                    <span style="font-size: 0.75rem; font-weight: 800; color: #1c1c1c;">GOLD</span>
+                </div>
+                <div class="user-avatar" id="userAvatar" onclick="toggleUserDropdown()"
+                    style="width: 36px; height: 36px; background: #2d67e3; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; cursor: pointer; position: relative; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    P
+                    <div id="userDropdown"
+                        style="display: none; position: absolute; top: 48px; right: 0; background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); width: 180px; z-index: 1001; overflow: hidden; animation: fadeIn 0.2s ease;">
+                        <div style="padding: 15px; background: var(--bg2); border-bottom: 1px solid var(--border);">
+                            <div id="dropdownUserName" style="font-weight: 700; font-size: 0.9rem; color: var(--text);">
+                                User</div>
+                            <div style="font-size: 0.7rem; color: var(--muted);">Zomato Gold Member</div>
+                        </div>
+                        <a href="#"
+                            style="display: flex; align-items: center; gap: 10px; padding: 12px 15px; text-decoration: none; color: var(--text); font-size: 0.85rem; transition: background 0.2s;"><i
+                                class="far fa-user" style="width: 15px;"></i> Profile</a>
+                        <a href="javascript:void(0)" onclick="showOrderHistory()"
+                            style="display: flex; align-items: center; gap: 10px; padding: 12px 15px; text-decoration: none; color: var(--text); font-size: 0.85rem; transition: background 0.2s;"><i
+                                class="fas fa-history" style="width: 15px;"></i> Order History</a>
+                        <a href="javascript:void(0)" onclick="showLikedFoods()"
+                            style="display: flex; align-items: center; gap: 10px; padding: 12px 15px; text-decoration: none; color: var(--text); font-size: 0.85rem; transition: background 0.2s;"><i
+                                class="fas fa-heart" style="width: 15px; color: var(--red);"></i> Liked Foods</a>
+                        <a href="javascript:void(0)" onclick="logout()"
+                            style="display: flex; align-items: center; gap: 10px; padding: 12px 15px; text-decoration: none; color: var(--red); font-size: 0.85rem; font-weight: 600; border-top: 1px solid var(--border); transition: background 0.2s;"><i
+                                class="fas fa-sign-out-alt" style="width: 15px;"></i> Log Out</a>
+                    </div>
+                </div>
+            </div>
+            <button class="mobile-menu-btn" onclick="openMobileNav()"><i class="fas fa-bars"></i></button>
+        </div>
+    </nav>
+
+    <!-- ── HERO ── -->
+    <section class="hero" id="hero">
+        <div class="hero-content" style="margin-top: 180px;">
+            <div id="goldBanner"
+                style="display: none; width: 100%; max-width: 760px; background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%); padding: 35px 25px; border-radius: 24px; margin-bottom: 40px; box-shadow: 0 15px 45px rgba(0,0,0,0.12); border: 1px solid #f9ca24; color: #1c1c1c; position: relative; overflow: hidden; text-align: center;">
+                <div
+                    style="position: absolute; top: 10px; right: 10px; font-size: 0.7rem; color: #b8860b; font-weight: 800; background: rgba(255,255,255,0.5); padding: 2px 8px; border-radius: 10px;">
+                    PROMO</div>
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                    <div
+                        style="font-size: 2.2rem; font-weight: 950; letter-spacing: 3px; color: #a67c00; text-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        GOLD FLASH SALE</div>
+                    <div style="font-size: 1.25rem; font-weight: 700; color: #444;">₹1 for 3 months</div>
+                    <button
+                        style="margin-top: 20px; background: #000; color: #fff; border: none; padding: 12px 35px; border-radius: 30px; font-size: 1rem; font-weight: 800; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">Join
+                        Gold now →</button>
+                </div>
+                <div
+                    style="position: absolute; bottom: -30px; left: -30px; opacity: 0.08; font-size: 10rem; transform: rotate(-15deg);">
+                    <i class="fas fa-crown"></i>
+                </div>
+            </div>
+            <div class="glass-tag"><i class="fas fa-fire"></i>&nbsp; India's #1 Food Delivery App</div>
+            <div class="hero-logo">zomato</div>
+            <h1 class="hero-title">Discover the best food &amp; drinks</h1>
+            <p class="hero-sub">Order from 200,000+ restaurants · Fast · Easy · Delicious</p>
+            <div class="hero-search">
+                <div class="hero-location"
+                    style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding-left: 20px;">
+                    <div style="display: flex; align-items: center; gap: 5px;">
+                        <i class="fas fa-map-marker-alt" style="color: var(--red); font-size: 0.9rem;"></i>
+                        <span id="currentLocName" style="font-weight: 700; font-size: 0.85rem; color: #1c1c1c;">Fourth
+                            Main Road</span>
+                        <i class="fas fa-chevron-down" style="font-size: 0.6rem; color: #888;"></i>
+                    </div>
+                    <div style="font-size: 0.65rem; color: #888; margin-left: 14px;">T.N.H.B.Phase-2, Tirupathur</div>
+                </div>
+                <div class="hero-search-input">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="heroSearch" placeholder="Search for restaurant, cuisine or dish…"
+                        onkeyup="filterRestaurants()">
+                </div>
+                <button class="hero-search-btn" onclick="filterRestaurants()"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="app-btns">
+                <a href="https://play.google.com/store/apps/details?id=com.application.zomato" target="_blank"
+                    class="app-btn"><i class="fab fa-google-play"></i>
+                    <div class="btn-text"><small>GET IT ON</small><span>Google Play</span></div>
+                </a>
+                <a href="https://apps.apple.com/in/app/zomato-food-delivery-dining/id434613896" target="_blank"
+                    class="app-btn"><i class="fab fa-apple"></i>
+                    <div class="btn-text"><small>Download on the</small><span>App Store</span></div>
+                </a>
+            </div>
+        </div>
+        <div class="scroll-down" onclick="document.getElementById('categories').scrollIntoView({behavior:'smooth'})">
+            <span style="font-size:0.82rem;">Explore</span><i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- ── CATEGORIES ── -->
+    <section class="section categories" id="categories">
+        <div class="section-header fade-in">
+            <div class="pill">POPULAR CATEGORIES</div>
+            <h2>What are you craving today?</h2>
+            <p>Pick a category and find the best restaurants near you</p>
+        </div>
+        <div class="cat-grid">
+            <div class="cat-card fade-in" onclick="filterByCategory('Pizza')">
+                <img class="cat-img" src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=200&q=80"
+                    alt="Pizza">
+                <span>Pizza</span><small>40+ places</small>
+            </div>
+            <div class="cat-card fade-in" onclick="filterByCategory('Burger')">
+                <img class="cat-img" src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200&q=80"
+                    alt="Burger">
+                <span>Burger</span><small>60+ places</small>
+            </div>
+            <div class="cat-card fade-in" onclick="filterByCategory('Biryani')">
+                <img class="cat-img" src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=200&q=80"
+                    alt="Biryani">
+                <span>Biryani</span><small>80+ places</small>
+            </div>
+            <div class="cat-card fade-in" onclick="filterByCategory('South Indian')">
+                <img class="cat-img" src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&q=80"
+                    alt="South Indian">
+                <span>South Indian</span><small>55+ places</small>
+            </div>
+            <div class="cat-card fade-in" onclick="filterByCategory('Chinese')">
+                <img class="cat-img" src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=200&q=80"
+                    alt="Chinese">
+                <span>Chinese</span><small>35+ places</small>
+            </div>
+            <div class="cat-card fade-in" onclick="filterByCategory('Desserts')">
+                <img class="cat-img" src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=200&q=80"
+                    alt="Desserts">
+                <span>Desserts</span><small>45+ places</small>
+            </div>
+            <div class="cat-card fade-in" onclick="filterByCategory('Beverages')">
+                <img class="cat-img" src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=200&q=80"
+                    alt="Beverages">
+                <span>Beverages</span><small>30+ places</small>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── RESTAURANTS ── -->
+    <section class="section restaurants" id="restaurants">
+        <div class="section-header fade-in">
+            <div class="pill">ORDER ONLINE</div>
+            <h2>Popular Restaurants Near You</h2>
+            <p>Fast delivery from top-rated restaurants in your city</p>
+        </div>
+        <div class="filters fade-in" id="restFilters">
+            <button class="filter-btn active" onclick="setFilter(this,'all')">All</button>
+            <button class="filter-btn" onclick="setFilter(this,'topr')">Top Rated</button>
+            <button class="filter-btn" onclick="setFilter(this,'fast')">Fast Delivery</button>
+            <button class="filter-btn" onclick="setFilter(this,'offer')">Offers</button>
+            <button class="filter-btn" onclick="setFilter(this,'veg')">Pure Veg</button>
+            <button class="filter-btn" onclick="setFilter(this,'new')">New</button>
+        </div>
+
+        <!-- Skeleton (shown while "loading") -->
+        <div class="skeleton-grid" id="skeletonGrid">
+            <div class="skel-card">
+                <div class="skel-img"></div>
+                <div class="skel-body">
+                    <div class="skel-line"></div>
+                    <div class="skel-line short"></div>
+                    <div class="skel-line xshort"></div>
+                </div>
+            </div>
+            <div class="skel-card">
+                <div class="skel-img"></div>
+                <div class="skel-body">
+                    <div class="skel-line"></div>
+                    <div class="skel-line short"></div>
+                    <div class="skel-line xshort"></div>
+                </div>
+            </div>
+            <div class="skel-card">
+                <div class="skel-img"></div>
+                <div class="skel-body">
+                    <div class="skel-line"></div>
+                    <div class="skel-line short"></div>
+                    <div class="skel-line xshort"></div>
+                </div>
+            </div>
+            <div class="skel-card">
+                <div class="skel-img"></div>
+                <div class="skel-body">
+                    <div class="skel-line"></div>
+                    <div class="skel-line short"></div>
+                    <div class="skel-line xshort"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actual restaurant cards -->
+        <div class="restaurant-grid" id="restaurantGrid" style="display:none;"></div>
+        <p id="noResults" style="display:none;text-align:center;color:var(--muted);font-size:1rem;margin-top:20px;">No
+            restaurants found. Try a different search.</p>
+    </section>
+
+    <!-- ── DINING ── -->
+    <section class="section" id="dining-sec" style="background:var(--bg);">
+        <div class="section-header fade-in">
+            <div class="pill">DINE OUT</div>
+            <h2>Best Dining Experiences</h2>
+            <p>Explore the city's finest restaurants for a perfect dine-out</p>
+        </div>
+        <div class="restaurant-grid">
+            <div class="rest-card fade-in"
+                onclick="window.open('https://maps.google.com/?q=The Colonial Kitchen Indiranagar Bangalore', '_blank')">
+                <div class="rest-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500&q=80" alt="Dining">
+                    <span class="badge-time"><i class="fas fa-clock"></i> 7 PM – 12 AM</span>
+                    <button class="fav-btn" onclick="event.stopPropagation(); toggleFav(this)"><i
+                            class="far fa-heart"></i></button>
+                </div>
+                <div class="rest-info">
+                    <div class="rest-row">
+                        <h4>The Colonial Kitchen</h4><span class="rating">4.7 <i class="fas fa-star"
+                                style="font-size:0.6rem"></i></span>
+                    </div>
+                    <div class="cuisine">Fine Dining · Continental · Wine Bar</div>
+                    <div class="price-row"><span>₹2500 for two</span><span>Reservations Open</span></div>
+                    <div class="location-tag"><i class="fas fa-map-marker-alt" style="color:var(--red)"></i>
+                        Indiranagar, Bangalore</div>
+                </div>
+            </div>
+            <div class="rest-card fade-in"
+                onclick="window.open('https://maps.google.com/?q=Truffles Koramangala Bangalore', '_blank')">
+                <div class="rest-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=500&q=80" alt="Dining">
+                    <span class="badge-time"><i class="fas fa-clock"></i> 12 PM – 11 PM</span>
+                    <button class="fav-btn" onclick="event.stopPropagation(); toggleFav(this)"><i
+                            class="far fa-heart"></i></button>
+                </div>
+                <div class="rest-info">
+                    <div class="rest-row">
+                        <h4>Truffles</h4><span class="rating">4.5 <i class="fas fa-star"
+                                style="font-size:0.6rem"></i></span>
+                    </div>
+                    <div class="cuisine">Burgers · American · Casual Dining</div>
+                    <div class="price-row"><span>₹700 for two</span><span>Walk-In Welcome</span></div>
+                    <div class="location-tag"><i class="fas fa-map-marker-alt" style="color:var(--red)"></i>
+                        Koramangala, Bangalore</div>
+                </div>
+            </div>
+            <div class="rest-card fade-in"
+                onclick="window.open('https://maps.google.com/?q=Skyye Rooftop Bar UB City Bangalore', '_blank')">
+                <div class="rest-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=500&q=80" alt="Dining">
+                    <span class="badge-time"><i class="fas fa-clock"></i> 6 PM – 1 AM</span>
+                    <button class="fav-btn" onclick="event.stopPropagation(); toggleFav(this)"><i
+                            class="far fa-heart"></i></button>
+                </div>
+                <div class="rest-info">
+                    <div class="rest-row">
+                        <h4>Skyye Rooftop Bar</h4><span class="rating orange">4.3 <i class="fas fa-star"
+                                style="font-size:0.6rem"></i></span>
+                    </div>
+                    <div class="cuisine">Rooftop · Cocktails · Global Cuisine</div>
+                    <div class="price-row"><span>₹3000 for two</span><span>Book Table</span></div>
+                    <div class="location-tag"><i class="fas fa-map-marker-alt" style="color:var(--red)"></i> UB City,
+                        Bangalore</div>
+                </div>
+            </div>
+            <div class="rest-card fade-in"
+                onclick="window.open('https://maps.google.com/?q=Koshys Cafe St. Marks Road Bangalore', '_blank')">
+                <div class="rest-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1544148103-0773bf10d330?w=500&q=80" alt="Dining">
+                    <span class="badge-time"><i class="fas fa-clock"></i> 11 AM – 10 PM</span>
+                    <button class="fav-btn" onclick="event.stopPropagation(); toggleFav(this)"><i
+                            class="far fa-heart"></i></button>
+                </div>
+                <div class="rest-info">
+                    <div class="rest-row">
+                        <h4>Koshy's Café</h4><span class="rating">4.4 <i class="fas fa-star"
+                                style="font-size:0.6rem"></i></span>
+                    </div>
+                    <div class="cuisine">Café · Breakfast · All-Day Dining</div>
+                    <div class="price-row"><span>₹500 for two</span><span>Heritage Spot</span></div>
+                    <div class="location-tag"><i class="fas fa-map-marker-alt" style="color:var(--red)"></i> St. Marks
+                        Road, Bangalore</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── COLLECTIONS ── -->
+    <section class="section collections" id="collections">
+        <div class="section-header fade-in">
+            <div class="pill">TRENDING</div>
+            <h2>Collections in Bangalore</h2>
+            <p>Curated lists of the best places in and around your city</p>
+        </div>
+        <div class="collections-grid">
+            <div class="coll-card fade-in" onclick="showToast('Exploring Trending Restaurants...')">
+                <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=600&q=80" alt="Nightlife">
+                <div class="coll-overlay"></div>
+                <div class="coll-badge">Nightlife</div>
+                <div class="coll-info">
+                    <h3>Trending This Week</h3><small>42 places</small>
+                </div>
+            </div>
+            <div class="coll-card fade-in" onclick="showToast('Exploring Newly Opened Spots...')">
+                <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=80" alt="New Openings">
+                <div class="coll-overlay"></div>
+                <div class="coll-badge">New</div>
+                <div class="coll-info">
+                    <h3>Newly Opened Spots</h3><small>28 places</small>
+                </div>
+            </div>
+            <div class="coll-card fade-in" onclick="showToast('Exploring Budget Eats...')">
+                <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&q=80"
+                    alt="Budget Friendly">
+                <div class="coll-overlay"></div>
+                <div class="coll-badge">Budget</div>
+                <div class="coll-info">
+                    <h3>Best Budget Eats</h3><small>65 places</small>
+                </div>
+            </div>
+            <div class="coll-card fade-in" onclick="showToast('Exploring Romantic Dinners...')">
+                <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=600&q=80" alt="Romantic">
+                <div class="coll-overlay"></div>
+                <div class="coll-badge">Romantic</div>
+                <div class="coll-info">
+                    <h3>Perfect Date Night</h3><small>19 places</small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── STATS ── -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-item fade-in"><i class="fas fa-utensils"></i>
+                <h3 id="stat1">0</h3>
+                <p>Restaurant Partners</p>
+            </div>
+            <div class="stat-item fade-in"><i class="fas fa-city"></i>
+                <h3 id="stat2">0</h3>
+                <p>Cities in India</p>
+            </div>
+            <div class="stat-item fade-in"><i class="fas fa-smile"></i>
+                <h3 id="stat3">0</h3>
+                <p>Million+ Happy Customers</p>
+            </div>
+            <div class="stat-item fade-in"><i class="fas fa-motorcycle"></i>
+                <h3 id="stat4">0</h3>
+                <p>Delivery Partners</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── APP DOWNLOAD ── -->
+    <section class="app-download" id="app-section">
+        <div class="app-inner">
+            <div class="app-mockup fade-in">
+                <img src="https://images.unsplash.com/photo-1512149177596-f817c7ef5d4c?w=400&q=80" alt="Zomato App">
+            </div>
+            <div class="app-text fade-in">
+                <div class="pill">GET THE APP</div>
+                <h2>Order faster with the Zomato App</h2>
+                <p>Get exclusive app-only deals, real-time order tracking, and seamless payments. Over 10 million
+                    downloads and counting.</p>
+                <div class="app-input-row">
+                    <input class="app-input" type="text" id="appPhone" placeholder="Enter email or phone number">
+                    <button class="app-send-btn" onclick="sendAppLink()">Send Link</button>
+                </div>
+                <div class="store-btns">
+                    <a href="https://play.google.com/store/apps/details?id=com.application.zomato" target="_blank"
+                        class="app-btn" style="background:#111;border-color:#333;"><i class="fab fa-google-play"></i>
+                        <div class="btn-text"><small>GET IT ON</small><span>Google Play</span></div>
+                    </a>
+                    <a href="https://apps.apple.com/in/app/zomato-food-delivery-dining/id434613896" target="_blank"
+                        class="app-btn" style="background:#111;border-color:#333;"><i class="fab fa-apple"></i>
+                        <div class="btn-text"><small>Download on the</small><span>App Store</span></div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── FOOTER ── -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <span class="f-logo">zomato</span>
+                <p>Better food for more people. Zomato is an Indian multinational restaurant aggregator and food
+                    delivery company founded in 2008.</p>
+                <div class="social-row">
+                    <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="f-col">
+                <h4>About</h4>
+                <ul>
+                    <li><a href="#">Who We Are</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Investor Relations</a></li>
+                    <li><a href="#">Report Fraud</a></li>
+                </ul>
+            </div>
+            <div class="f-col">
+                <h4>Zomaverse</h4>
+                <ul>
+                    <li><a href="#">Zomato</a></li>
+                    <li><a href="#">Blinkit</a></li>
+                    <li><a href="#">Feeding India</a></li>
+                    <li><a href="#">Hyperpure</a></li>
+                    <li><a href="#">Zomaland</a></li>
+                </ul>
+            </div>
+            <div class="f-col">
+                <h4>For Restaurants</h4>
+                <ul>
+                    <li><a href="#">Partner With Us</a></li>
+                    <li><a href="#">Apps For You</a></li>
+                    <li><a href="#">Business App</a></li>
+                    <li><a href="#">Zomato for Business</a></li>
+                </ul>
+            </div>
+            <div class="f-col">
+                <h4>Learn More</h4>
+                <ul>
+                    <li><a href="#">Privacy</a></li>
+                    <li><a href="#">Security</a></li>
+                    <li><a href="#">Terms</a></li>
+                    <li><a href="#">Sitemap</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Zomato Ltd. All rights reserved.</p>
+            <div class="footer-bottom-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ── DATA ──
+        const restaurants = [
+            { name: "Meghana Foods", img: "https://images.unsplash.com/photo-1551782450-17144efb9c50?w=400&q=80", rating: "4.3", rClass: "", time: "32 min", cuisine: "Biryani, South Indian, Chinese", price: "₹350 for two", loc: "Koramangala", badge: "50% OFF up to ₹100", tags: ["all", "offer", "topr"], veg: false },
+            { name: "Paradise Biryani", img: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&q=80", rating: "4.1", rClass: "", time: "28 min", cuisine: "Biryani, North Indian", price: "₹400 for two", loc: "Indiranagar", badge: "30% OFF up to ₹75", tags: ["all", "offer", "fast"], veg: false },
+            { name: "The Bowl Company", img: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&q=80", rating: "4.5", rClass: "", time: "25 min", cuisine: "Healthy Food, Salads, Bowls", price: "₹250 for two", loc: "HSR Layout", badge: "₹125 OFF above ₹249", tags: ["all", "topr", "veg", "fast"], veg: true },
+            { name: "Domino's Pizza", img: "https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=400&q=80", rating: "3.9", rClass: "orange", time: "20 min", cuisine: "Pizzas, Italian, Fast Food", price: "₹300 for two", loc: "Marathahalli", badge: "FREE DELIVERY", tags: ["all", "fast", "offer"], veg: false },
+            { name: "Social", img: "https://images.unsplash.com/photo-1544148103-0773bf10d330?w=400&q=80", rating: "4.4", rClass: "", time: "35 min", cuisine: "American, Chinese, Drinks", price: "₹900 for two", loc: "Koramangala", badge: "New Launch", tags: ["all", "topr", "new"], veg: false },
+            { name: "Swiggy Instamart", img: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80", rating: "4.2", rClass: "", time: "15 min", cuisine: "Groceries, Daily Essentials", price: "₹150 for two", loc: "All Areas", badge: "10 min delivery", tags: ["all", "fast", "new"], veg: true },
+            { name: "Chai Point", img: "https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400&q=80", rating: "4.0", rClass: "", time: "22 min", cuisine: "Tea, Coffee, Snacks", price: "₹120 for two", loc: "MG Road", badge: "Buy 2 Get 1 Free", tags: ["all", "offer", "veg", "fast"], veg: true },
+            { name: "Pizza Hut", img: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&q=80", rating: "3.8", rClass: "red", time: "40 min", cuisine: "Pizzas, Pastas, Desserts", price: "₹550 for two", loc: "JP Nagar", badge: "20% OFF", tags: ["all", "offer"], veg: false },
+        ];
+
+        let activeFilter = "all", searchTerm = "";
+
+        function buildCard(r) {
+            const mapQuery = encodeURIComponent(r.name + " " + r.loc + " Bangalore");
+            return `<div class="rest-card fade-in" data-tags="${r.tags.join(',')}" onclick="window.open('https://maps.google.com/?q=${mapQuery}', '_blank')">
+        <div class="rest-img-wrap">
+            <img src="${r.img}" alt="${r.name}" loading="lazy">
+            <span class="badge">${r.badge}</span>
+            <span class="badge-time"><i class="fas fa-clock"></i> ${r.time}</span>
+            <button class="fav-btn" onclick="event.stopPropagation(); toggleFav(this)"><i class="far fa-heart"></i></button>
+        </div>
+        <div class="rest-info">
+            <div class="rest-row"><h4>${r.name}</h4><span class="rating ${r.rClass}">${r.rating} <i class="fas fa-star" style="font-size:0.6rem"></i></span></div>
+            <div class="cuisine">${r.cuisine}${r.veg ? ' · <span style="color:#267e3e;font-weight:600;">Veg</span>' : ''}</div>
+            <div class="price-row"><span>${r.price}</span><span>${r.time}</span></div>
+            <div class="location-tag"><i class="fas fa-map-marker-alt" style="color:var(--red)"></i> ${r.loc}, Bangalore</div>
+        </div>
+    </div>`;
+        }
+
+        function renderRestaurants() {
+            const grid = document.getElementById('restaurantGrid');
+            const s = searchTerm.toLowerCase();
+            const filtered = restaurants.filter(r => {
+                const matchFilter = activeFilter === 'all' || r.tags.includes(activeFilter);
+                const matchSearch = !s || r.name.toLowerCase().includes(s) || r.cuisine.toLowerCase().includes(s) || r.loc.toLowerCase().includes(s);
+                return matchFilter && matchSearch;
+            });
+            grid.innerHTML = filtered.map(buildCard).join('');
+            document.getElementById('noResults').style.display = filtered.length === 0 ? 'block' : 'none';
+            // re-observe new fade-in
+            grid.querySelectorAll('.fade-in').forEach(el => {
+                el.classList.add('visible');
+            });
+        }
+
+        function setFilter(btn, f) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            activeFilter = f;
+            renderRestaurants();
+        }
+
+        function filterRestaurants() {
+            searchTerm = document.getElementById('heroSearch').value;
+            renderRestaurants();
+            if (searchTerm) document.getElementById('restaurants').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function filterByCategory(cat) {
+            searchTerm = cat;
+            document.getElementById('heroSearch').value = cat;
+            renderRestaurants();
+            document.getElementById('restaurants').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ── SKELETON → CARDS after 1.2s ──
+        setTimeout(() => {
+            document.getElementById('skeletonGrid').style.display = 'none';
+            const grid = document.getElementById('restaurantGrid');
+            grid.style.display = 'grid';
+            renderRestaurants();
+        }, 1200);
+
+        // ── NAVBAR SCROLL ──
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 80);
+        });
+
+        // ── DARK MODE ──
+        const darkToggle = document.getElementById('darkToggle');
+        let dark = localStorage.getItem('zomato-dark') === '1';
+        applyTheme();
+        darkToggle.addEventListener('click', () => { dark = !dark; localStorage.setItem('zomato-dark', dark ? '1' : '0'); applyTheme(); });
+        function applyTheme() {
+            document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+            darkToggle.innerHTML = dark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        }
+
+        // ── FADE IN OBSERVER ──
+        const io = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+        document.querySelectorAll('.fade-in').forEach(el => io.observe(el));
+
+        // ── COUNTER ──
+        function animCounter(id, target, suffix) {
+            const el = document.getElementById(id);
+            let cur = 0; const step = target / 60;
+            const t = setInterval(() => { cur += step; if (cur >= target) { cur = target; clearInterval(t); } el.textContent = Math.floor(cur).toLocaleString() + suffix; }, 18);
+        }
+        let statsDone = false;
+        new IntersectionObserver(es => {
+            if (es[0].isIntersecting && !statsDone) {
+                statsDone = true;
+                animCounter('stat1', 200000, '+'); animCounter('stat2', 800, '+');
+                animCounter('stat3', 100, '+'); animCounter('stat4', 300000, '+');
+            }
+        }, { threshold: 0.3 }).observe(document.querySelector('.stats'));
+
+        // ── FAVOURITES & LIKED FOODS ──
+        let likedFoodsArr = [];
+
+        function toggleFav(btn) {
+            btn.classList.toggle('active');
+            const active = btn.classList.contains('active');
+            btn.innerHTML = active ? '<i class="fas fa-heart" style="color:var(--red)"></i>' : '<i class="far fa-heart"></i>';
+
+            // Find restaurant info
+            const card = btn.closest('.rest-card');
+            if (card) {
+                const name = card.querySelector('.rest-row h4').textContent;
+                const priceRow = card.querySelector('.price-row span').textContent;
+
+                if (active) {
+                    likedFoodsArr.push({ name: name, desc: priceRow });
+                } else {
+                    likedFoodsArr = likedFoodsArr.filter(f => f.name !== name);
+                }
+            }
+
+            showToast(active ? 'Added to favourites ❤️' : 'Removed from favourites');
+        }
+
+        // ── MODALS ──
+        function closeDropdowns() {
+            const dropdown = document.getElementById('userDropdown');
+            if (dropdown && dropdown.style.display === 'block') {
+                dropdown.style.display = 'none';
+            }
+        }
+
+        function showGoldMembership() {
+            document.getElementById('modalOverlay').classList.add('open');
+            document.getElementById('goldModal').classList.add('show');
+            closeDropdowns();
+        }
+
+        function showOrderHistory() {
+            document.getElementById('modalOverlay').classList.add('open');
+            document.getElementById('orderHistoryModal').classList.add('show');
+            closeDropdowns();
+        }
+
+        function showLikedFoods() {
+            const listEl = document.getElementById('likedFoodsList');
+            const msgEl = document.getElementById('noLikedFoodsMsg');
+            listEl.innerHTML = '';
+
+            if (likedFoodsArr.length === 0) {
+                msgEl.style.display = 'block';
+            } else {
+                msgEl.style.display = 'none';
+                listEl.innerHTML = likedFoodsArr.map(f => `
+                    <div class="modal-item">
+                        <div class="modal-item-info">
+                            <h4>${f.name}</h4>
+                            <p>${f.desc}</p>
+                        </div>
+                        <div class="modal-item-price"><i class="fas fa-heart" style="color:var(--red)"></i></div>
+                    </div>
+                `).join('');
+            }
+
+            document.getElementById('modalOverlay').classList.add('open');
+            document.getElementById('likedFoodsModal').classList.add('show');
+            closeDropdowns();
+        }
+
+        function closeAllModals() {
+            document.getElementById('modalOverlay').classList.remove('open');
+            document.querySelectorAll('.custom-modal').forEach(m => m.classList.remove('show'));
+        }
+
+        // ── MOBILE NAV ──
+        function openMobileNav() { document.getElementById('mobileNav').classList.add('open'); document.getElementById('overlay').classList.add('open'); }
+        function closeMobileNav() { document.getElementById('mobileNav').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
+
+        // ── TOAST ──
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg; t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2800);
+        }
+
+        // ── APP LINK ──
+        function sendAppLink() {
+            const v = document.getElementById('appPhone').value.trim();
+            if (!v) { showToast('Please enter your email or phone number'); return; }
+            if (v.includes('@')) {
+                showToast('Success! An email with the download link has been sent to ' + v + ' 📱✅');
+            } else {
+                showToast('Success! An SMS with the download link has been sent to ' + v + ' 📱✅');
+            }
+            document.getElementById('appPhone').value = '';
+        }
+
+        // ── NAV ACTIVE ON SCROLL ──
+        const sections = [...document.querySelectorAll('section[id]')];
+        const navLinks = [...document.querySelectorAll('.nav-links a')];
+        window.addEventListener('scroll', () => {
+            let cur = '';
+            sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) cur = s.id; });
+            navLinks.forEach(a => {
+                a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
+            });
+        });
+        // ── AUTH CHECK ──
+        function checkAuth() {
+            const token = localStorage.getItem('zomato-token');
+            const user = JSON.parse(localStorage.getItem('zomato-user'));
+            const authLinks = document.getElementById('authLinks');
+            const userProfile = document.getElementById('userProfile');
+            const goldBanner = document.getElementById('goldBanner');
+
+            if (token && user) {
+                authLinks.style.display = 'none';
+                userProfile.style.display = 'flex';
+                goldBanner.style.display = 'block';
+                document.getElementById('userAvatar').childNodes[0].textContent = user.firstName.charAt(0);
+                document.getElementById('dropdownUserName').textContent = `${user.firstName} ${user.lastName}`;
+                showToast(`Welcome back, ${user.firstName}!`);
+            } else {
+                authLinks.style.display = 'flex';
+                userProfile.style.display = 'none';
+                goldBanner.style.display = 'none';
+            }
+        }
+
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function logout() {
+            localStorage.removeItem('zomato-token');
+            localStorage.removeItem('zomato-user');
+            window.location.reload();
+        }
+
+        // Close dropdown on click outside
+        window.onclick = function (event) {
+            if (!event.target.matches('.user-avatar')) {
+                const dropdown = document.getElementById('userDropdown');
+                if (dropdown && dropdown.style.display === 'block') {
+                    dropdown.style.display = 'none';
+                }
+            }
+        }
+
+        // Initial check
+        checkAuth();
+    </script>
+</body>
+
+</html>

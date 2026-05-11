@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up – Zomato</title>
+    <meta name="description" content="Create a Zomato account to order from 200,000+ restaurants and get exclusive deals.">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --red: #d21622; --red-dark: #c5303b;
+            --bg: #f8f8f8; --card-bg: #ffffff;
+            --text: #1c1c1c; --muted: #696969; --border: #e8e8e8;
+        }
+        [data-theme="dark"] {
+            --bg: #0f0f0f; --card-bg: #1e1e1e;
+            --text: #f0f0f0; --muted: #a0a0a0; --border: #2e2e2e;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; transition: background 0.3s, color 0.3s; }
+
+        .navbar { background: var(--card-bg); border-bottom: 1px solid var(--border); padding: 14px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 8px rgba(0,0,0,0.07); }
+        .nav-logo { font-size: 1.7rem; font-weight: 900; font-style: italic; color: var(--red); text-decoration: none; }
+        .nav-right { display: flex; align-items: center; gap: 12px; }
+        .dark-btn { background: none; border: 1.5px solid var(--border); color: var(--text); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 0.95rem; transition: all 0.25s; }
+        .dark-btn:hover { background: var(--red); border-color: var(--red); color: #fff; }
+        .nav-link { text-decoration: none; font-size: 0.88rem; font-weight: 600; color: var(--red); border: 1.5px solid var(--red); padding: 7px 18px; border-radius: 8px; transition: all 0.25s; }
+        .nav-link:hover, .nav-link.filled { background: var(--red); color: #fff; }
+
+        .auth-wrap { flex: 1; display: flex; }
+        .auth-banner {
+            flex: 1; position: relative;
+            background: url('https://images.unsplash.com/photo-1551782450-17144efb9c50?w=1200&q=80') center/cover no-repeat;
+        }
+        .auth-banner::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.1) 70%); }
+        .banner-content { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding: 50px; color: #fff; }
+        .banner-content .brand { font-size: 2.6rem; font-weight: 900; font-style: italic; margin-bottom: 14px; }
+        .banner-content h2 { font-size: 1.8rem; font-weight: 700; line-height: 1.3; margin-bottom: 12px; }
+        .perks { list-style: none; display: flex; flex-direction: column; gap: 9px; margin-top: 14px; }
+        .perks li { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: rgba(255,255,255,0.88); }
+        .perks li i { color: #f9c23c; }
+
+        .auth-panel { flex: 0 0 500px; background: var(--card-bg); display: flex; flex-direction: column; justify-content: center; padding: 45px 45px; overflow-y: auto; }
+        .auth-panel h1 { font-size: 1.7rem; font-weight: 800; margin-bottom: 5px; }
+        .auth-panel .sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 26px; }
+        .auth-panel .sub a { color: var(--red); text-decoration: none; font-weight: 600; }
+        .auth-panel .sub a:hover { text-decoration: underline; }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 6px; }
+        .input-wrap { position: relative; display: flex; align-items: center; }
+        .input-wrap i.icon { position: absolute; left: 13px; color: var(--muted); font-size: 0.88rem; pointer-events: none; }
+        .form-group input {
+            width: 100%; padding: 11px 13px 11px 37px;
+            border: 1.5px solid var(--border); border-radius: 10px;
+            font-family: 'Poppins', sans-serif; font-size: 0.88rem;
+            background: var(--bg); color: var(--text);
+            outline: none; transition: border-color 0.25s, box-shadow 0.25s;
+        }
+        .form-group input:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(226,55,68,0.1); }
+        .toggle-pw { position: absolute; right: 12px; background: none; border: none; color: var(--muted); cursor: pointer; font-size: 0.86rem; }
+        .toggle-pw:hover { color: var(--red); }
+        .field-err { font-size: 0.74rem; color: var(--red); margin-top: 4px; display: none; }
+        .form-group.invalid input { border-color: var(--red); }
+        .form-group.invalid .field-err { display: block; }
+        .form-group.valid input { border-color: #267e3e; }
+
+        /* Password strength */
+        .pw-strength { margin-top: 7px; }
+        .pw-bar { height: 4px; border-radius: 4px; background: var(--border); overflow: hidden; margin-bottom: 4px; }
+        .pw-fill { height: 100%; width: 0; border-radius: 4px; transition: width 0.35s, background 0.35s; }
+        .pw-lbl { font-size: 0.73rem; color: var(--muted); }
+
+        .terms-check { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 16px; font-size: 0.8rem; color: var(--text); }
+        .terms-check input { accent-color: var(--red); margin-top: 2px; flex-shrink: 0; }
+        .terms-check a { color: var(--red); text-decoration: none; }
+
+        .btn-main { width: 100%; padding: 13px; background: var(--red); color: #fff; border: none; border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: background 0.25s, transform 0.2s; margin-bottom: 18px; }
+        .btn-main:hover { background: var(--red-dark); transform: translateY(-2px); }
+        .btn-main:disabled { opacity: 0.7; cursor: default; transform: none; }
+
+        .divider { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 0.8rem; margin-bottom: 16px; }
+        .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+        .social-btns { display: flex; gap: 12px; }
+        .social-btn { flex: 1; padding: 10px; border: 1.5px solid var(--border); border-radius: 10px; background: var(--card-bg); color: var(--text); font-family: 'Poppins', sans-serif; font-size: 0.83rem; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.25s; }
+        .social-btn:hover { border-color: var(--red); color: var(--red); }
+        .google-icon { color: #ea4335; } .fb-icon { color: #1877f2; }
+
+        .alert { padding: 12px 16px; border-radius: 10px; font-size: 0.85rem; margin-bottom: 16px; display: none; }
+        .alert.success { background: rgba(38,126,62,0.1); color: #267e3e; border: 1px solid rgba(38,126,62,0.25); }
+        .alert.error { background: rgba(226,55,68,0.08); color: var(--red); border: 1px solid rgba(226,55,68,0.2); }
+
+        @media (max-width: 900px) { .auth-banner { display: none; } .auth-panel { flex: 1; } }
+        @media (max-width: 540px) { .auth-panel { padding: 32px 20px; } .form-row { grid-template-columns: 1fr; } .social-btns { flex-direction: column; } }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="nav-logo">zomato</a>
+        <div class="nav-right">
+            <button class="dark-btn" id="darkBtn" title="Toggle dark mode"><i class="fas fa-moon"></i></button>
+            <a href="login.html" class="nav-link">Log In</a>
+            <a href="signup.html" class="nav-link filled">Sign Up</a>
+        </div>
+    </nav>
+
+    <div class="auth-wrap">
+        <div class="auth-banner">
+            <div class="banner-content">
+                <div class="brand">zomato</div>
+                <h2>Join 10 million+ food lovers</h2>
+                <ul class="perks">
+                    <li><i class="fas fa-bolt"></i> Lightning-fast delivery to your door</li>
+                    <li><i class="fas fa-tag"></i> Exclusive member discounts &amp; offers</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Real-time order tracking</li>
+                    <li><i class="fas fa-star"></i> Rate restaurants &amp; share reviews</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="auth-panel">
+            <h1>Create your account ✨</h1>
+            <p class="sub">Already have one? <a href="login.html">Log in</a></p>
+
+            <div class="alert" id="alert"></div>
+
+            <form id="signupForm" novalidate>
+                <div class="form-row">
+                    <div class="form-group" id="grp-fname">
+                        <label for="fname">First name</label>
+                        <div class="input-wrap"><i class="fas fa-user icon"></i><input type="text" id="fname" placeholder="Arjun" autocomplete="given-name"></div>
+                        <span class="field-err">First name required.</span>
+                    </div>
+                    <div class="form-group" id="grp-lname">
+                        <label for="lname">Last name</label>
+                        <div class="input-wrap"><i class="fas fa-user icon"></i><input type="text" id="lname" placeholder="Sharma" autocomplete="family-name"></div>
+                        <span class="field-err">Last name required.</span>
+                    </div>
+                </div>
+
+                <div class="form-group" id="grp-email">
+                    <label for="email">Email address</label>
+                    <div class="input-wrap"><i class="fas fa-envelope icon"></i><input type="email" id="email" placeholder="you@example.com" autocomplete="email"></div>
+                    <span class="field-err">Enter a valid email.</span>
+                </div>
+
+                <div class="form-group" id="grp-phone">
+                    <label for="phone">Phone number</label>
+                    <div class="input-wrap"><i class="fas fa-phone icon"></i><input type="tel" id="phone" placeholder="+91 98765 43210" autocomplete="tel"></div>
+                    <span class="field-err">Enter a valid phone number.</span>
+                </div>
+
+                <div class="form-group" id="grp-pw">
+                    <label for="password">Password</label>
+                    <div class="input-wrap">
+                        <i class="fas fa-lock icon"></i>
+                        <input type="password" id="password" placeholder="Min. 8 characters" autocomplete="new-password" oninput="updateStrength(this.value)">
+                        <button type="button" class="toggle-pw" onclick="togglePw('password',this)"><i class="fas fa-eye"></i></button>
+                    </div>
+                    <div class="pw-strength"><div class="pw-bar"><div class="pw-fill" id="pwFill"></div></div><span class="pw-lbl" id="pwLbl">Enter a password</span></div>
+                    <span class="field-err">Password must be at least 8 characters.</span>
+                </div>
+
+                <div class="form-group" id="grp-confirm">
+                    <label for="confirm">Confirm password</label>
+                    <div class="input-wrap">
+                        <i class="fas fa-lock icon"></i>
+                        <input type="password" id="confirm" placeholder="Re-enter password" autocomplete="new-password">
+                        <button type="button" class="toggle-pw" onclick="togglePw('confirm',this)"><i class="fas fa-eye"></i></button>
+                    </div>
+                    <span class="field-err">Passwords do not match.</span>
+                </div>
+
+                <div class="terms-check">
+                    <input type="checkbox" id="terms">
+                    <label for="terms">I agree to Zomato's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</label>
+                </div>
+
+                <button type="submit" class="btn-main" id="signupBtn">
+                    <i class="fas fa-user-plus"></i>&nbsp; Create Account
+                </button>
+            </form>
+
+            <div class="divider">or sign up with</div>
+            <div class="social-btns">
+                <button class="social-btn" onclick="showAlert('Google signup coming soon!','error')"><i class="fab fa-google google-icon"></i> Google</button>
+                <button class="social-btn" onclick="showAlert('Facebook signup coming soon!','error')"><i class="fab fa-facebook-f fb-icon"></i> Facebook</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API = 'http://localhost:5001/api/auth';
+
+        // Dark mode
+        let dark = localStorage.getItem('zomato-dark') === '1';
+        const darkBtn = document.getElementById('darkBtn');
+        applyDark();
+        darkBtn.addEventListener('click', () => { dark = !dark; localStorage.setItem('zomato-dark', dark ? '1' : '0'); applyDark(); });
+        function applyDark() {
+            document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+            darkBtn.innerHTML = dark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        }
+
+        function togglePw(id, btn) {
+            const el = document.getElementById(id);
+            const show = el.type === 'password';
+            el.type = show ? 'text' : 'password';
+            btn.innerHTML = show ? '<i class="fas fa-eye-slash"></i>' : '<i class="fas fa-eye"></i>';
+        }
+
+        function updateStrength(v) {
+            let score = 0;
+            if (v.length >= 8) score++;
+            if (/[A-Z]/.test(v)) score++;
+            if (/[0-9]/.test(v)) score++;
+            if (/[^A-Za-z0-9]/.test(v)) score++;
+            const map = [
+                { w: '25%', bg: '#e23744', txt: 'Weak' },
+                { w: '50%', bg: '#e07c2a', txt: 'Fair' },
+                { w: '75%', bg: '#f9c23c', txt: 'Good' },
+                { w: '100%', bg: '#267e3e', txt: 'Strong 💪' },
+            ];
+            const s = v.length ? map[Math.max(0, score - 1)] : { w: '0', bg: 'transparent', txt: 'Enter a password' };
+            document.getElementById('pwFill').style.width = v.length ? s.w : '0';
+            document.getElementById('pwFill').style.background = s.bg;
+            document.getElementById('pwLbl').textContent = s.txt;
+        }
+
+        function showAlert(msg, type) {
+            const el = document.getElementById('alert');
+            el.textContent = msg;
+            el.className = 'alert ' + type;
+            el.style.display = 'block';
+            setTimeout(() => el.style.display = 'none', 4500);
+        }
+
+        function validate(id, grpId, fn) {
+            const el = document.getElementById(id);
+            const grp = document.getElementById(grpId);
+            const ok = fn(el.value.trim());
+            grp.classList.toggle('invalid', !ok);
+            grp.classList.toggle('valid', ok);
+            return ok;
+        }
+
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const fnOk = validate('fname',    'grp-fname',   v => v.length >= 2);
+            const lnOk = validate('lname',    'grp-lname',   v => v.length >= 2);
+            const emOk = validate('email',    'grp-email',   v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+            const phOk = validate('phone',    'grp-phone',   v => /^\+?[\d\s\-]{10,}$/.test(v));
+            const pwOk = validate('password', 'grp-pw',      v => v.length >= 8);
+            const cfOk = validate('confirm',  'grp-confirm', v => v === document.getElementById('password').value);
+            if (!document.getElementById('terms').checked) { showAlert('Please accept the Terms of Service to continue.', 'error'); return; }
+            if (!fnOk || !lnOk || !emOk || !phOk || !pwOk || !cfOk) return;
+
+            const btn = document.getElementById('signupBtn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>&nbsp; Creating account…';
+            btn.disabled = true;
+
+            try {
+                const res = await fetch(`${API}/signup`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        firstName: document.getElementById('fname').value.trim(),
+                        lastName:  document.getElementById('lname').value.trim(),
+                        email:     document.getElementById('email').value.trim(),
+                        phone:     document.getElementById('phone').value.trim(),
+                        password:  document.getElementById('password').value,
+                    }),
+                });
+                const data = await res.json();
+                if (data.success) {
+                    localStorage.setItem('zomato-token', data.token);
+                    localStorage.setItem('zomato-user', JSON.stringify(data.user));
+                    showAlert(data.message, 'success');
+                    setTimeout(() => window.location.href = 'index.html', 1400);
+                } else {
+                    showAlert(data.message, 'error');
+                    btn.innerHTML = '<i class="fas fa-user-plus"></i>&nbsp; Create Account';
+                    btn.disabled = false;
+                }
+            } catch (err) {
+                showAlert('Cannot connect to server. Make sure the backend is running on port 5001.', 'error');
+                btn.innerHTML = '<i class="fas fa-user-plus"></i>&nbsp; Create Account';
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
