@@ -1593,7 +1593,7 @@
             <div class="hero-logo">zomato</div>
             <h1 class="hero-title">Discover the best food &amp; drinks</h1>
             <p class="hero-sub">Order from 200,000+ restaurants · Fast · Easy · Delicious</p>
-            <div class="hero-search">
+            <div class="hero-search" id="heroSearchContainer" style="display: none;">
                 <div class="hero-location"
                     style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding-left: 20px;">
                     <div style="display: flex; align-items: center; gap: 5px; cursor: pointer;" onclick="detectLocation()">
@@ -2205,11 +2205,13 @@
             const authLinks = document.getElementById('authLinks');
             const userProfile = document.getElementById('userProfile');
             const goldBanner = document.getElementById('goldBanner');
+            const heroSearchContainer = document.getElementById('heroSearchContainer');
 
             if (token && user) {
                 authLinks.style.display = 'none';
                 userProfile.style.display = 'flex';
                 goldBanner.style.display = 'block';
+                heroSearchContainer.style.display = 'flex';
                 document.getElementById('userAvatar').childNodes[0].textContent = user.firstName.charAt(0);
                 document.getElementById('dropdownUserName').textContent = `${user.firstName} ${user.lastName}`;
                 showToast(`Welcome back, ${user.firstName}!`);
@@ -2217,6 +2219,7 @@
                 authLinks.style.display = 'flex';
                 userProfile.style.display = 'none';
                 goldBanner.style.display = 'none';
+                heroSearchContainer.style.display = 'none';
             }
         }
 
