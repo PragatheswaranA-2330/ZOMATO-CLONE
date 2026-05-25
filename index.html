@@ -1596,13 +1596,12 @@
             <div class="hero-search">
                 <div class="hero-location"
                     style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding-left: 20px;">
-                    <div style="display: flex; align-items: center; gap: 5px;">
+                    <div style="display: flex; align-items: center; gap: 5px; cursor: pointer;" onclick="detectLocation()">
                         <i class="fas fa-map-marker-alt" style="color: var(--red); font-size: 0.9rem;"></i>
-                        <span id="currentLocName" style="font-weight: 700; font-size: 0.85rem; color: #1c1c1c;">Fourth
-                            Main Road</span>
-                        <i class="fas fa-chevron-down" style="font-size: 0.6rem; color: #888;"></i>
+                        <span id="currentLocName" style="font-weight: 700; font-size: 0.85rem; color: #1c1c1c;">Fourth Main Road</span>
+                        <i class="fas fa-crosshairs" id="detectLocIcon" title="Detect Location" style="font-size: 0.8rem; color: var(--red); margin-left: 3px;"></i>
                     </div>
-                    <div style="font-size: 0.65rem; color: #888; margin-left: 14px;">T.N.H.B.Phase-2, Tirupathur</div>
+                    <div id="currentLocSub" style="font-size: 0.65rem; color: #888; margin-left: 14px;">T.N.H.B.Phase-2, Tirupathur</div>
                 </div>
                 <div class="hero-search-input">
                     <i class="fas fa-search"></i>
